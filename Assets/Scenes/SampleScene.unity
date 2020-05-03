@@ -461,7 +461,7 @@ MonoBehaviour:
   - {fileID: 2696264478619928434, guid: e803d9fa34072d8479b23030d924c939, type: 3}
   - {fileID: 1447246754050927264, guid: be416d8bad8d7154d9bb8c398734d496, type: 3}
   - {fileID: 2696264478619928434, guid: e803d9fa34072d8479b23030d924c939, type: 3}
-  spawnSpace: {x: 10, y: 10}
+  spawnSpace: {x: 20, y: 20}
   spawnRate: 3
 --- !u!4 &1520683229
 Transform:
