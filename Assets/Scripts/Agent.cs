@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class Agent : MonoBehaviour
 {
     NavMeshAgent agent;
+    Vector3 hitPoint;
 
     // Start is called before the first frame update
     void Start()
@@ -24,16 +25,29 @@ public class Agent : MonoBehaviour
 
     void CheckClick()
     {
-        bool clickOnFloor;
+        //bool clickOnFloor;
         RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        //RAYCAST
+        
 
-        //if(clickOnFloor) setTarget();
+        if (Physics.Raycast(ray,out hit))
+        {
+            hitPoint = hit.point;
+            if (hit.collider.gameObject.CompareTag("Floor"))
+            {
+                setTarget(hit.point);
+            }
+        }
     }
 
-    Vector3 setTarget(Vector3 target)
+    void setTarget(Vector3 target)
     {
-        return target;
+       agent.destination = target;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawSphere(hitPoint, 2);
     }
 }
