@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     public Material actualMaterial;
     int current;  //indice de la pieza actual
     GameObject nextPiece;
+    GameObject nextPieceModel;
+    List<GameObject> pieceParts = new List<GameObject>();
     Vector3 storePos = new Vector3(0, 0, -100);
 
     // Start is called before the first frame update
@@ -20,8 +22,15 @@ public class PlayerController : MonoBehaviour
         //Se instancia la pieza siguiente, se deshabilita el collider y utilizamos el 
         //material transparente
         nextPiece = Instantiate(pieces[current], storePos, Quaternion.identity) as GameObject;
-        nextPiece.GetComponent<Collider>().enabled = false;
-        nextPiece.GetComponent<Renderer>().material = previewMaterial;
+
+        nextPieceModel = Instantiate(pieces[current], storePos, Quaternion.identity) as GameObject;
+        nextPieceModel.GetComponent<Rigidbody>().useGravity = false;
+
+        for (int i = 0; i < nextPiece.transform.childCount; i++)
+        {
+            nextPiece.transform.GetChild(i).gameObject.GetComponent<Collider>().enabled = false;
+            nextPiece.transform.GetChild(i).gameObject.GetComponent<Renderer>().material = previewMaterial;
+        }
     }
 
     // Update is called once per frame
@@ -72,8 +81,11 @@ public class PlayerController : MonoBehaviour
         nextPiece.transform.position += new Vector3(0, 8, 0);
 
         //Se habilita collider, se ubica material final
-        nextPiece.GetComponent<Collider>().enabled = true;
-        nextPiece.GetComponent<Renderer>().material = actualMaterial;
+        for (int i = 0; i < nextPiece.transform.childCount; i++)
+        {
+            nextPiece.transform.GetChild(i).gameObject.GetComponent<Collider>().enabled = true;
+            nextPiece.transform.GetChild(i).gameObject.GetComponent<Renderer>().material = actualMaterial;
+        }
 
         //Prepara próxima pieza
         SetNextPiece();
@@ -86,7 +98,18 @@ public class PlayerController : MonoBehaviour
         //Se instancia la pieza siguiente, se deshabilita el collider y utilizamos el 
         //material transparente
         nextPiece = Instantiate(pieces[current], storePos, Quaternion.identity) as GameObject;
-        nextPiece.GetComponent<Collider>().enabled = false;
-        nextPiece.GetComponent<Renderer>().material = previewMaterial;
+
+        Destroy(nextPieceModel);
+
+        nextPieceModel = Instantiate(pieces[current], storePos, Quaternion.identity) as GameObject;
+        nextPieceModel.GetComponent<Rigidbody>().useGravity = false;
+
+       
+
+        for (int i = 0; i < nextPiece.transform.childCount; i++)
+        {
+            nextPiece.transform.GetChild(i).gameObject.GetComponent<Collider>().enabled = false;
+            nextPiece.transform.GetChild(i).gameObject.GetComponent<Renderer>().material = previewMaterial;
+        }
     }
 }
