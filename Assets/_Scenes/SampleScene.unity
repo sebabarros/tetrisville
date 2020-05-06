@@ -501,13 +501,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pieces:
   - {fileID: 2696264478619928434, guid: e803d9fa34072d8479b23030d924c939, type: 3}
-  - {fileID: 768130015470234635, guid: c8f7bfdb6f3e6f64f8f5612b17beaa0f, type: 3}
   - {fileID: 1447246754050927264, guid: be416d8bad8d7154d9bb8c398734d496, type: 3}
-  - {fileID: 768130015470234635, guid: c8f7bfdb6f3e6f64f8f5612b17beaa0f, type: 3}
+  - {fileID: 1447246754050927264, guid: be416d8bad8d7154d9bb8c398734d496, type: 3}
+  - {fileID: 2696264478619928434, guid: e803d9fa34072d8479b23030d924c939, type: 3}
   - {fileID: 2696264478619928434, guid: e803d9fa34072d8479b23030d924c939, type: 3}
   - {fileID: 1447246754050927264, guid: be416d8bad8d7154d9bb8c398734d496, type: 3}
-  - {fileID: 768130015470234635, guid: c8f7bfdb6f3e6f64f8f5612b17beaa0f, type: 3}
+  - {fileID: 1447246754050927264, guid: be416d8bad8d7154d9bb8c398734d496, type: 3}
   - {fileID: 2696264478619928434, guid: e803d9fa34072d8479b23030d924c939, type: 3}
+  previewMaterial: {fileID: 2100000, guid: c00aa0b37c0086e48be5488f988be6ed, type: 2}
+  actualMaterial: {fileID: 2100000, guid: e452c3c024e444b4b97565d2bb660550, type: 2}
 --- !u!4 &788228146
 Transform:
   m_ObjectHideFlags: 0
