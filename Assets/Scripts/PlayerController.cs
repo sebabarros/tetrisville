@@ -44,10 +44,18 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CheckMousePos();        
+        CheckMousePos();
 
-        //Rotate
+        Rotate();
     }
+       
+
+    //Rota la figura de a incrementos de 30 grados 
+    void Rotate()
+    {
+        currPiece.transform.Rotate(Vector3.up, Input.mouseScrollDelta.y * 30);
+    }
+
 
     //Chequea que el click impacte en el suelo
     void CheckMousePos()
