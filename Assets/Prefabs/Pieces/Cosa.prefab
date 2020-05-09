@@ -61,6 +61,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 662ef77bee15ea24a8658cd37a844fc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  previewMaterial: {fileID: 2100000, guid: c00aa0b37c0086e48be5488f988be6ed, type: 2}
+  cantDropMaterial: {fileID: 2100000, guid: 02bb47e8b63d1144aae5ba32e9cf3701, type: 2}
+  actualMaterial: {fileID: 2100000, guid: e452c3c024e444b4b97565d2bb660550, type: 2}
 --- !u!1 &4519798887773571755
 GameObject:
   m_ObjectHideFlags: 0
@@ -74,9 +77,9 @@ GameObject:
   - component: {fileID: 1556117485938689129}
   - component: {fileID: 8373122518045576661}
   - component: {fileID: 548150629}
-  m_Layer: 8
+  m_Layer: 2
   m_Name: Sphere
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

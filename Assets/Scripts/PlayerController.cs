@@ -1,42 +1,52 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class PlayerController : MonoBehaviour
 {
-    Vector3 hitPoint;
+    Vector3 hitPoint; //punto del suelo donde se ubica el cursor
     public GameObject[] pieces; //Las piezas de tetris a utilizar en orden
-    public Material previewMaterial;
-    public Material actualMaterial;
+
+    
     int current;  //indice de la pieza actual
-    GameObject nextPiece;
+
+    GameObject currPiece;  //Pieza a manipular
+    Obstacle currPieceObstacle; //Script Obstacle de la pieza a manipular
+
+    //Contenedor para la pieza duplicada que se utiliza para previsualizar
     GameObject nextPieceModel;
-    List<GameObject> pieceParts = new List<GameObject>();
-    Vector3 storePos = new Vector3(0, 0, -100);
+
+
+    Vector3 storePos = new Vector3(0, 0, -200); //Posicion inicial de la pieza instanciada
+    Vector3 previewPos = new Vector3(0, 0, -100); //Posición de la siguiente pieza a previsualizar
 
     // Start is called before the first frame update
     void Start()
     {
         current = 0; //Seteamos el indice a 0
 
-        //Se instancia la pieza siguiente, se deshabilita el collider y utilizamos el 
-        //material transparente
-        nextPiece = Instantiate(pieces[current], storePos, Quaternion.identity) as GameObject;
+        //Se instancia la nueva pieza lejos de la escena y se inhabilita su gravedad
+        currPiece = Instantiate(pieces[current], storePos, Quaternion.identity) as GameObject;
 
-        nextPieceModel = Instantiate(pieces[current], storePos, Quaternion.identity) as GameObject;
+        currPieceObstacle = currPiece.GetComponent<Obstacle>();
+        currPieceObstacle.SetGravity(false);
+
+        //Se instancia la pieza siguiente frente a la cámara de preview y se inhabilita su gravedad
+        nextPieceModel = Instantiate(pieces[current + 1], previewPos, Quaternion.identity) as GameObject;
         nextPieceModel.GetComponent<Rigidbody>().useGravity = false;
 
-        for (int i = 0; i < nextPiece.transform.childCount; i++)
-        {
-            nextPiece.transform.GetChild(i).gameObject.GetComponent<Collider>().enabled = false;
-            nextPiece.transform.GetChild(i).gameObject.GetComponent<Renderer>().material = previewMaterial;
-        }
+        //Se setea la pieza a trigger y se inhabilita su componente NavMeshObstacle
+        currPieceObstacle.SetTriggers(true);
+        currPieceObstacle.SetNavObstacle(false);
     }
 
     // Update is called once per frame
     void Update()
     {
         CheckMousePos();        
+
+        //Rotate
     }
 
     //Chequea que el click impacte en el suelo
@@ -58,8 +68,9 @@ public class PlayerController : MonoBehaviour
             {
                 //Mostramos la pieza previa a su ubicación
                 DisplayPiecePos(hitPoint);
-                //En caso de hacer click y que sigan quedando piezas en la lista
-                if (Input.GetMouseButtonDown(0) && current < pieces.Length)
+
+                //En caso de hacer click Y que sigan quedando piezas en la lista Y que no esté obstaculizado
+                if (Input.GetMouseButtonDown(0) && current < pieces.Length && currPieceObstacle.GetCanPlace())
                 {
                     DropPiece(hitPoint);
                 }
@@ -71,21 +82,19 @@ public class PlayerController : MonoBehaviour
     {
         //Se ubica el objeto en la posición indicada
         Vector3 displayPos = new Vector3(location.x, location.y + 1, location.z);
-        nextPiece.transform.position = displayPos;
+        currPiece.transform.position = displayPos;
     }
 
     //Funcion para ubicar la pieza en la escena
     void DropPiece(Vector3 location)
     {
         //La elevamos para que caiga
-        nextPiece.transform.position += new Vector3(0, 8, 0);
+        currPiece.transform.position += new Vector3(0, 8, 0);
 
-        //Se habilita collider, se ubica material final
-        for (int i = 0; i < nextPiece.transform.childCount; i++)
-        {
-            nextPiece.transform.GetChild(i).gameObject.GetComponent<Collider>().enabled = true;
-            nextPiece.transform.GetChild(i).gameObject.GetComponent<Renderer>().material = actualMaterial;
-        }
+        //Se habilita la gravedad y el NavMeshObstacle, se desetea el Trigger
+        currPieceObstacle.SetGravity(true);
+        currPieceObstacle.SetNavObstacle(true);
+        currPieceObstacle.SetTriggers(false);
 
         //Prepara próxima pieza
         SetNextPiece();
@@ -95,21 +104,20 @@ public class PlayerController : MonoBehaviour
     {
         current++; //Incrementamos a la siguiente pieza
 
-        //Se instancia la pieza siguiente, se deshabilita el collider y utilizamos el 
-        //material transparente
-        nextPiece = Instantiate(pieces[current], storePos, Quaternion.identity) as GameObject;
+        //Se instancia la pieza siguiente, se deshabilita la gravedad
+        currPiece = Instantiate(pieces[current], storePos, Quaternion.identity) as GameObject;
 
+        currPieceObstacle = currPiece.GetComponent<Obstacle>();
+        currPieceObstacle.SetGravity(false);
+
+        //Se setea a Trigger e inhabilita el componente NavMeshObstacle
+        currPieceObstacle.SetTriggers(true);
+        currPieceObstacle.SetNavObstacle(false);
+
+
+        //Destruimos la pieza previsualizada y la suplantamos por la siguiente
         Destroy(nextPieceModel);
-
-        nextPieceModel = Instantiate(pieces[current], storePos, Quaternion.identity) as GameObject;
+        nextPieceModel = Instantiate(pieces[current + 1], previewPos, Quaternion.identity) as GameObject;
         nextPieceModel.GetComponent<Rigidbody>().useGravity = false;
-
-       
-
-        for (int i = 0; i < nextPiece.transform.childCount; i++)
-        {
-            nextPiece.transform.GetChild(i).gameObject.GetComponent<Collider>().enabled = false;
-            nextPiece.transform.GetChild(i).gameObject.GetComponent<Renderer>().material = previewMaterial;
-        }
-    }
+    }    
 }
