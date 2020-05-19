@@ -42,7 +42,7 @@ public class CameraController : MonoBehaviour
         if(camSwitch)
         {
             transform.position = agent.transform.position + displacement;
-            camIndicator.text = "CAMARA FIJA";
+            camIndicator.text = "SEGUIMIENTO";
         }
         else
         {
@@ -59,42 +59,41 @@ public class CameraController : MonoBehaviour
     /// </summary>
     void MouseCam()
     {
-        if (Input.mousePosition.y <= Screen.height / 8)
+        if (Input.mousePosition.y <= Screen.height / 8 && Input.mousePosition.y > Screen.height / 16)
         {
-            if (Input.mousePosition.y <= Screen.height / 16)
-            {
-                transform.position -= transform.forward * increment * 3f * Time.deltaTime;
-                return;
-            }
             transform.position -= transform.forward * increment * Time.deltaTime;
         }
-        else if (Input.mousePosition.y >= 7 * (Screen.height / 8))
+        else if (Input.mousePosition.y <= Screen.height / 16)
         {
-            if (Input.mousePosition.y >= 15 * (Screen.height / 16))
-            {
-                transform.position += transform.forward * increment * 3f * Time.deltaTime;
-                return;
-            }
+            transform.position -= transform.forward * increment * 3f * Time.deltaTime;
+        }
+        else if (Input.mousePosition.y >= 7 * (Screen.height / 8) && Input.mousePosition.y < 15 * (Screen.height / 16))
+        {
+            
             transform.position += transform.forward * increment * Time.deltaTime;
         }
-
-        if (Input.mousePosition.x <= Screen.width / 8)
+        else if(Input.mousePosition.y >= 15 * (Screen.height / 16))
         {
-            if (Input.mousePosition.x <= Screen.width / 16)
-            {
-                transform.position -= transform.right * increment * 3f * Time.deltaTime;
-                return;
-            }
+            transform.position += transform.forward * increment * 3f * Time.deltaTime;
+        }
+
+
+        if (Input.mousePosition.x <= Screen.width / 8 && Input.mousePosition.x > Screen.width / 16)
+        {            
             transform.position -= transform.right * increment * Time.deltaTime;
         }
-        else if (Input.mousePosition.x > 7 * (Screen.width / 8))
+        else if (Input.mousePosition.x <= Screen.width / 16)
         {
-            if (Input.mousePosition.x >= 15* (Screen.width / 16))
-            {
-                transform.position += transform.right * increment * 3f * Time.deltaTime;
-                return;
-            }
+            transform.position -= transform.right * increment * 3f * Time.deltaTime;
+        }
+        else if (Input.mousePosition.x > 7 * (Screen.width / 8) && Input.mousePosition.x < 15 * (Screen.width / 16))
+        {
+            
             transform.position += transform.right * increment * Time.deltaTime;
+        }
+        else if (Input.mousePosition.x >= 15 * (Screen.width / 16))
+        {
+            transform.position += transform.right * increment * 3f * Time.deltaTime;
         }
 
     }
